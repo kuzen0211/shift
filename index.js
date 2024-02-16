@@ -5,12 +5,11 @@ const uuid = require('uuid');
 const exp = require('constants');
 const fs = require('fs').promises;
 require('dotenv').config();
+const authRouter = require('./routes/auth');
 
 const { MONGO_URL } = process.env;
 
 const app = express();
-
-const authRouter = require('./routes/auth');
 
 mongoose
   .connect(MONGO_URL)
@@ -28,20 +27,19 @@ app.use(express.json());
 
 app.use('/api/auth', authRouter);
 
-app.post('/api/users', async (req, res) => {
-  const { name, year } = req.body;
-  const dataFromDB = await fs;
-  try {
-    res.status(200).json({
-      users: {
-        name: 'Bohdan',
-        year: 1989,
-      },
-    });
-  } catch (error) {
-    console.log(error);
-  }
-});
+// app.post('/api/auth/register', async (req, res) => {
+//   const newUser = await User.create(req.body);
+
+//   try {
+//     res.status(201).json({
+//       email: newUser.email,
+//       name: newUser.name,
+//       password: newUser.password,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
 
 const port = 3000;
 

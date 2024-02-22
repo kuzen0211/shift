@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+const { Schema, model } = require('mongoose');
 const handleMongooseError = require('../helpers/handleMongooseError');
 
-const userSchema = mongoose.Schema({
+const userSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -29,6 +29,6 @@ const userSchema = mongoose.Schema({
 });
 
 userSchema.post('save', handleMongooseError);
-const User = mongoose.model('user', userSchema);
+const User = model('user', userSchema);
 
 module.exports = User;

@@ -6,6 +6,7 @@ const exp = require('constants');
 const fs = require('fs').promises;
 require('dotenv').config();
 const authRouter = require('./routes/auth');
+const shiftRouter = require('./routes/shift');
 
 const { MONGO_URL } = process.env;
 
@@ -26,7 +27,16 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/auth', authRouter);
+app.use('/api/shift', shiftRouter);
 
+app.use((req, res) => {
+  res.status(404).json({ message: 'Not found' });
+});
+
+app.use((err, req, res, next) => {
+  const { status = 500, message = 'Server error' } = err;
+  res.status(status).json({ message });
+});
 // app.post('/api/auth/register', async (req, res) => {
 //   const newUser = await User.create(req.body);
 

@@ -19,8 +19,13 @@ const shiftSchema = new Schema(
       type: String,
       required: false,
     },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+      required: true,
+    },
   },
-  { versionKey: false }
+  { versionKey: false, timestamps: true }
 );
 
 shiftSchema.post('save', handleMongooseError);

@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const uuid = require('uuid');
 const exp = require('constants');
 const fs = require('fs').promises;
-require('dotenv').config();
 const authRouter = require('./routes/auth');
 const shiftRouter = require('./routes/shift');
 

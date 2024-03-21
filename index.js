@@ -37,7 +37,7 @@ app.use((err, req, res, next) => {
   const { status = 500, message = 'Server error' } = err;
   res.status(status).json({ message });
 });
-const port = 3000;
+const port = 4000;
 
 app.listen(port, () => {
   console.log(`Server up and running on port: ${port}`);

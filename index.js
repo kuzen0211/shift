@@ -38,20 +38,6 @@ app.use((err, req, res, next) => {
   const { status = 500, message = 'Server error' } = err;
   res.status(status).json({ message });
 });
-// app.post('/api/auth/register', async (req, res) => {
-//   const newUser = await User.create(req.body);
-
-//   try {
-//     res.status(201).json({
-//       email: newUser.email,
-//       name: newUser.name,
-//       password: newUser.password,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
-
 const port = 3000;
 
 app.listen(port, () => {

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { registerValidator, loginValidator } = require('../utils/index');
+const { registerValidator, loginValidator, emailValidator } = require('../utils/index');
 const { validation, authenticate, upload } = require('../middlewares');
 const ctrl = require('../controllers/auth/auth');
 
@@ -9,6 +9,12 @@ router.post('/register', validation(registerValidator), ctrl.register);
 
 // signin
 router.post('/login', validation(loginValidator), ctrl.login);
+
+//verification
+router.get('/verify/:verificationCode', ctrl.verifyEmail);
+
+//re-verification
+router.post('/verify', validation(emailValidator), ctrl.resendVerifyEmail);
 
 //current
 router.get('/current', authenticate, ctrl.getCurrent);

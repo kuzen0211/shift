@@ -4,7 +4,7 @@ const gravatar = require('gravatar');
 const path = require('path');
 const fs = require('fs/promises');
 const { v4: uuidv4 } = require('uuid');
-const { SECRET_KEY } = process.env;
+const { SECRET_KEY, BASE_URL } = process.env;
 
 const User = require('../../models/userModel');
 
@@ -34,7 +34,7 @@ const register = async (req, res) => {
   const verifyEmail = {
     to: email,
     subject: 'Verify email',
-    html: `<a target='_blank' href='http://localhost:3000/api/auth/verify/${verificationCode}'>Click verify email</a>`,
+    html: `<a target='_blank' href='${BASE_URL}/api/auth/verify/${verificationCode}'>Click verify email</a>`,
   };
 
   await sendEmail(verifyEmail);

@@ -13,7 +13,7 @@ const nodemailerConfig = {
 const transport = nodemailer.createTransport(nodemailerConfig);
 
 const sendEmail = async data => {
-  const email = { ...data, from: 'no-reply@gmail.com' };
+  const email = { ...data, from: GMAIL_EMAIL };
   await transport.sendMail(email);
   return true;
 };

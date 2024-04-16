@@ -2,18 +2,23 @@ const nodemailer = require('nodemailer');
 const { GMAIL_PASSWORD, GMAIL_EMAIL } = process.env;
 
 const nodemailerConfig = {
-  host: 'smtp.mailgun.org',
+  service: 'hotmail',
+  host: 'smtp-mail.outlook.com',
+  secure: false,
   port: 587,
   auth: {
-    user: GMAIL_EMAIL,
-    pass: GMAIL_PASSWORD,
+    user: 'no-reply-ua@hotmail.com',
+    pass: 'Sabolina_11',
+  },
+  tls: {
+    ciphers: 'SSLv3',
   },
 };
 
 const transport = nodemailer.createTransport(nodemailerConfig);
 
 const sendEmail = async data => {
-  const email = { ...data, from: GMAIL_EMAIL };
+  const email = { ...data, from: 'no-reply-ua@hotmail.com' };
   await transport.sendMail(email);
   return true;
 };

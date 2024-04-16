@@ -6,6 +6,7 @@ const exp = require('constants');
 const fs = require('fs').promises;
 const authRouter = require('./routes/auth');
 const shiftRouter = require('./routes/shift');
+const dotenv = require('dotenv').config();
 
 const { MONGO_URL } = process.env;
 

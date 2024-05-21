@@ -40,10 +40,11 @@ const register = async (req, res) => {
   await sendEmail(verifyEmail);
 
   res.status(201).json({
-    email: newUser.email,
-    name: newUser.name,
-    avatarURL: newUser.avatarURL,
-    token: newUser.token,
+    user: {
+      email: newUser.email,
+      name: newUser.name,
+      avatarURL: newUser.avatarURL,
+    },
   });
 };
 

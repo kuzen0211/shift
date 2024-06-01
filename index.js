@@ -23,12 +23,21 @@ mongoose
     process.exit(1);
   });
 
-app.use(cors());
+const corsOptions = {
+  origin: 'http://localhost:5173', // Specify the origin you want to allow
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS', // Specify allowed methods
+  allowedHeaders: 'Origin,X-Requested-With,Content-Type,Accept,Authorization', // Specify allowed headers
+  optionsSuccessStatus: 204, // Some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.static('public'));
 
 app.use('/api/auth', authRouter);
 app.use('/api/shift', shiftRouter);
+
+app.options('*', cors(corsOptions));
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Not found' });
@@ -37,14 +46,6 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   const { status = 500, message = 'Server error' } = err;
   res.status(status).json({ message });
-
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
-  );
-  next();
 });
 const port = 4000;
 

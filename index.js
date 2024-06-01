@@ -37,6 +37,14 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   const { status = 500, message = 'Server error' } = err;
   res.status(status).json({ message });
+
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  );
+  next();
 });
 const port = 4000;
 

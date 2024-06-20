@@ -52,8 +52,9 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
+  const normalizedEmail = email.toLowerCase();
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ normalizedEmail });
 
   if (!user) {
     throw HttpError(401, 'Email or password invalid');
@@ -94,7 +95,9 @@ const verifyEmail = async (req, res) => {
 
 const resendVerifyEmail = async (req, res) => {
   const { email } = req.body;
-  const user = await User.findOne({ email });
+  const normalizedEmail = email.toLowerCase();
+
+  const user = await User.findOne({ normalizedEmail });
 
   if (!user) {
     throw HttpError(401, 'Email not found');
@@ -104,7 +107,7 @@ const resendVerifyEmail = async (req, res) => {
   }
 
   const verifyEmail = {
-    to: email,
+    to: normalizedEmail,
     subject: 'Verify email',
     html: `<a target='_blank' href='http://localhost:3000/api/auth/verify/${user.verificationCode}'>Click verify email</a>`,
   };

@@ -14,7 +14,8 @@ const avatarDir = path.join(__dirname, '../../', 'public', 'avatars');
 
 const register = async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email });
+  const normalizedEmail = email.toLowerCase();
+  const user = await User.findOne({ normalizedEmail });
 
   if (user) {
     throw HttpError(409, 'Email already in use');
@@ -26,6 +27,7 @@ const register = async (req, res) => {
 
   const newUser = await User.create({
     ...req.body,
+    email: normalizedEmail,
     password: createHashPassword,
     avatarURL,
     verificationCode,

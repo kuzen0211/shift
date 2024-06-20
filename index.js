@@ -7,6 +7,7 @@ const fs = require('fs').promises;
 const authRouter = require('./routes/auth');
 const shiftRouter = require('./routes/shift');
 const dotenv = require('dotenv').config();
+const cron = require('node-cron');
 
 const { MONGO_URL } = process.env;
 
@@ -23,13 +24,13 @@ mongoose
     process.exit(1);
   });
 
-const corsOptions = {
-  origin: 'http://localhost:5173', // Specify the origin you want to allow
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS', // Specify allowed methods
-  allowedHeaders: 'Origin,X-Requested-With,Content-Type,Accept,Authorization', // Specify allowed headers
-  optionsSuccessStatus: 204, // Some legacy browsers (IE11, various SmartTVs) choke on 204
-  credentials: true,
-};
+cron.schedule('*/5 * * * *', async () => {
+  try {
+    await SomeModel.findOne(); // Простий запит для прогрівання
+  } catch (error) {
+    console.error('Error during warming up:', error);
+  }
+});
 
 app.use(cors());
 

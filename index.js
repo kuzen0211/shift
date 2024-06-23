@@ -8,6 +8,7 @@ const authRouter = require('./routes/auth');
 const shiftRouter = require('./routes/shift');
 const dotenv = require('dotenv').config();
 const cron = require('node-cron');
+const User = require('./models/userModel');
 
 const { MONGO_URL } = process.env;
 
@@ -26,7 +27,7 @@ mongoose
 
 cron.schedule('*/5 * * * *', async () => {
   try {
-    await SomeModel.findOne(); // Простий запит для прогрівання
+    await User.findOne(); // Простий запит для прогрівання
   } catch (error) {
     console.error('Error during warming up:', error);
   }

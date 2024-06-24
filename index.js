@@ -7,8 +7,6 @@ const fs = require('fs').promises;
 const authRouter = require('./routes/auth');
 const shiftRouter = require('./routes/shift');
 const dotenv = require('dotenv').config();
-const cron = require('node-cron');
-const User = require('./models/userModel');
 
 const { MONGO_URL } = process.env;
 
@@ -25,13 +23,13 @@ mongoose
     process.exit(1);
   });
 
-cron.schedule('*/5 * * * *', async () => {
+setInterval(async () => {
   try {
-    await User.findOne(); // Простий запит для прогрівання
+    await mongoose.connection.db.admin().ping();
   } catch (error) {
-    console.error('Error during warming up:', error);
+    console.error('Error pinging MongoDB:', error);
   }
-});
+}, 60000);
 
 app.use(cors());
 

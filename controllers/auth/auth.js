@@ -4,6 +4,7 @@ const gravatar = require('gravatar');
 const path = require('path');
 const fs = require('fs/promises');
 const { v4: uuidv4 } = require('uuid');
+// const dotenv = require('dotenv').config();
 const { SECRET_KEY, BASE_URL } = process.env;
 
 const User = require('../../models/userModel');
@@ -15,7 +16,7 @@ const avatarDir = path.join(__dirname, '../../', 'public', 'avatars');
 const register = async (req, res) => {
   const { email, password } = req.body;
   const normalizedEmail = email.toLowerCase();
-  const user = await User.findOne({ normalizedEmail });
+  const user = await User.findOne({ email: normalizedEmail });
 
   if (user) {
     throw HttpError(409, 'Email already in use');
@@ -52,9 +53,9 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  const normalizedEmail = email.toLowerCase();
+  const normalized = email.toLowerCase();
 
-  const user = await User.findOne({ normalizedEmail });
+  const user = await User.findOne({ email: normalized });
 
   if (!user) {
     throw HttpError(401, 'Email or password invalid');
@@ -73,13 +74,10 @@ const login = async (req, res) => {
   const payload = {
     id: user._id,
   };
-
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '100h' });
   await User.findByIdAndUpdate(user._id, { token });
 
-  console.log('token', token);
-
-  res.json({ token });
+  res.json({ token, name: user.name, email: user.email, avatar: user.avatarURL });
 };
 
 const verifyEmail = async (req, res) => {

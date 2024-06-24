@@ -55,7 +55,6 @@ const login = async (req, res) => {
   const normalizedEmail = email.toLowerCase();
 
   const user = await User.findOne({ normalizedEmail });
-  // console.log(user);
 
   if (!user) {
     throw HttpError(401, 'Email or password invalid');
@@ -78,7 +77,9 @@ const login = async (req, res) => {
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '100h' });
   await User.findByIdAndUpdate(user._id, { token });
 
-  res.json({ token, name: user.name, email: user.email, avatarURL: user.avatarURL });
+  console.log('token', token);
+
+  res.json({ token });
 };
 
 const verifyEmail = async (req, res) => {
